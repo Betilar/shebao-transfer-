@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨省社保转移流程查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 16px 16px;
+        }
+        
+        .top-gradient {
+            height: 8px;
+            background: linear-gradient(90deg, #4f46e5, #06b6d4);
+            margin-bottom: 24px;
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        
+        .header-icon {
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 42px;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .header-subtitle {
+            font-size: 15px;
+            color: #6b7280;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+        }
+        
+        .info-card {
+            background: #f8f9fc;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-dot {
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+        
+        .select-section {
+            margin-bottom: 16px;
+        }
+        
+        .select-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 6px;
+            font-weight: 500;
+            display: block;
+        }
+        
+        select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 16px;
+            color: #1f2937;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 18px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .select-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+        
+        .select-arrow {
+            font-size: 28px;
+            color: #9ca3af;
+            margin-bottom: 6px;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            padding: 16px;
+            background: #eff6ff;
+            color: #4f46e5;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background: #dbeafe;
+        }
+        
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 24px 0;
+        }
+        
+        .result {
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #fbbf24;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .warning-box.show {
+            display: block;
+        }
+        
+        .warning-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .warning-desc {
+            font-size: 14px;
+            color: #78350f;
+            line-height: 1.6;
+        }
+        
+        .tags-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .tag.east-1 {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .tag.east-2 {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .tag.east-3 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .tag.central-1 {
+            background: #dcfce7;
+            color: #059669;
+        }
+        
+        .tag.central-2 {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+        
+        .tag.central-3 {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        
+        .tag.west-1 {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+        
+        .tag.west-2 {
+            background: #fef9c3;
+            color: #ca8a04;
+        }
+        
+        .tag.west-3 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .tag.ethnic-1 {
+            background: #e9d5ff;
+            color: #7c3aed;
+        }
+        
+        .tag.ethnic-2 {
+            background: #fed7aa;
+            color: #ea580c;
+        }
+        
+        .tag.ethnic-3 {
+            background: #bfdbfe;
+            color: #2563eb;
+        }
+        
+        .flow-header {
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+        }
+        
+        .flow-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .flow-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .timing-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .timing-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .timing-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        
+        .timing-days {
+            font-size: 30px;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+        
+        .timing-card.express .timing-days {
+            color: #dc2626;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .info-cell {
+            background: #f8f9fc;
+            padding: 14px 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .info-cell-label {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        
+        .info-cell-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .section-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title-icon {
+            font-size: 20px;
+        }
+        
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px;
+            background: #f8f9fc;
+            border-radius: 14px;
+            border-left: 3px solid #4f46e5;
+        }
+        
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .step-body {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+        
+        .step-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+        
+        .step-agent {
+            font-size: 12px;
+            color: #9ca3af;
+            padding: 4px 12px;
+            background: white;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .materials-box {
+            background: #f0fff5;
+            border: 1px solid #b7eb8f;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        
+        .materials-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #006633;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .materials-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .materials-list li {
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #1f2937;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+        
+        .materials-list li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .materials-list li::before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            background: #52c41a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .materials-list li:nth-child(1)::before { content: '1'; }
+        .materials-list li:nth-child(2)::before { content: '2'; }
+        .materials-list li:nth-child(3)::before { content: '3'; }
+        .materials-list li:nth-child(4)::before { content: '4'; }
+        .materials-list li:nth-child(5)::before { content: '5'; }
+        
+        .materials-list li .hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .insurance-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        
+        .insurance-cell {
+            padding: 14px 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .insurance-cell.available {
+            background: #f0fff5;
+            border: 1px solid #d9f7be;
+            color: #006633;
+        }
+        
+        .insurance-cell.unavailable {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #9ca3af;
+        }
+        
+        .insurance-icon {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        
+        .insurance-hint {
+            font-size: 11px;
+            opacity: 0.75;
+            margin-top: 4px;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        
+        .link-item {
+            padding: 14px 10px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            text-align: center;
+            color: #4f46e5;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .link-item:hover {
+            background: #dbeafe;
+            border-color: #4f46e5;
+        }
+        
+        .link-hint {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        .faq-item {
+            margin-bottom: 12px;
+            background: #f8f9fc;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .faq-q {
+            padding: 16px 18px;
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .faq-q:hover {
+            background: #f0f2f8;
+        }
+        
+        .faq-q::after {
+            content: '+';
+            font-size: 22px;
+            color: #9ca3af;
+            transition: transform 0.2s;
+        }
+        
+        .faq-q.active::after {
+            transform: rotate(45deg);
+        }
+        
+        .faq-a {
+            padding: 0 18px;
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.7;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .faq-a.show {
+            padding-bottom: 16px;
+            max-height: 200px;
+        }
+        
+        .data-section {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        
+        .data-section p {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        
+        .data-section ul {
+            margin: 0 0 12px 0;
+            padding-left: 22px;
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+        
+        .data-section li {
+            margin-bottom: 6px;
+        }
+        
+        .data-section strong {
+            color: #1f2937;
+        }
+        
+        .data-section .highlight {
+            background: #fef3c7;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        
+        .policy-section {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            margin-bottom: 18px;
+        }
+        
+        .policy-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        
+        .policy-item {
+            background: #f8f9fc;
+            padding: 18px;
+            border-radius: 12px;
+        }
+        
+        .policy-item-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .policy-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+        
+        .policy-item-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 24px 16px 40px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        
+        .footer p {
+            margin-bottom: 6px;
+        }
+        
+        @media (max-width: 520px) {
+            .container {
+                padding: 0 14px 14px;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .select-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .select-arrow {
+                display: none;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .insurance-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .policy-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tags-row {
+                justify-content: flex-start;
+            }
+            
+            .timing-days {
+                font-size: 26px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+            
+            .card {
+                padding: 24px;
+            }
+            
+            .flow-header {
+                padding: 28px;
+            }
+            
+            .flow-header h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-gradient"></div>
+    
+    <div class="container">
+        <div class="header-section">
+            <div class="header-icon">📋</div>
+            <div class="header-title">跨省社保转移流程查询</div>
+            <div class="header-subtitle">基于人社部公开数据 · 可视化办理差异</div>
+        </div>
+        
+        <div class="info-card">
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-dot"></span>
+                    <div><strong>这是什么？</strong> 一个模拟跨省社保转移办理时间和业务点的交互工具。</div>
+                </li>
+                <li class="info-item">
+                    <span class="info-dot"></span>
+                    <div><strong>为什么做？</strong> 可视化"条块结合、以块为主"的地区差异和体制影响。</div>
+                </li>
+                <li class="info-item">
+                    <span class="info-dot"></span>
+                    <div><strong>数据说明：</strong> 当前为模拟逻辑，依据地区信息化水平分类。</div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <div class="select-row">
+                <div class="select-section">
+                    <label class="select-label">转出地</label>
+                    <select id="fromRegion">
+                        <option value="">请选择转出地</option>
+                    </select>
+                </div>
+                
+                <div class="select-arrow">→</div>
+                
+                <div class="select-section">
+                    <label class="select-label">转入地</label>
+                    <select id="toRegion">
+                        <option value="">请选择转入地</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn-primary" onclick="showTransferFlow()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+                查询转移流程
+            </button>
+            
+            <button class="btn-secondary" id="shareBtn" onclick="shareResult()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-2.28 1.58-4.16 3.6-4.16 1.02 0 1.96.56 2.54 1.41l2.75-2.06c-.95-1.35-2.28-2.25-3.8-2.25-2.67 0-4.88 2.21-4.88 4.94 0 2.12 1.28 3.98 3.12 4.65l-1.06 3.28c-.32 1.01.16 2.12 1.02 2.59 9.06 3.62 9.64-2.27 9.64-5.49 0-2.87-2.06-5.29-5.06-5.87z" />
+                </svg>
+                分享结果
+            </button>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div id="warningBox" class="warning-box" style="display: none;">
+            <div class="warning-title" id="warningTitle">⚠️ 提示信息</div>
+            <div class="warning-desc" id="warningDesc"></div>
+            <div class="tags-row" id="tagsRow"></div>
+        </div>
+        
+        <div id="result" class="result">
+            <div class="flow-header">
+                <h3 id="flowTitle">转移流程</h3>
+                <p id="flowSubtitle">预计办理时限</p>
+            </div>
+            
+            <div class="timing-cards">
+                <div class="timing-card">
+                    <div class="timing-label">一般办理时限</div>
+                    <div class="timing-days" id="normalDays">45-60个工作日</div>
+                </div>
+                <div class="timing-card express">
+                    <div class="timing-label">加急办理时限</div>
+                    <div class="timing-days" id="expressDays">30-40个工作日</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="info-grid" id="infoRow"></div>
+                
+                <div class="section-title">
+                    <span class="section-title-icon">📋</span>
+                    办理流程
+                </div>
+                <div class="steps-list" id="stepsList"></div>
+            </div>
+            
+            <div class="materials-box">
+                <div class="materials-title">📝 办理材料清单</div>
+                <ol class="materials-list">
+                    <li><div>本人身份证原件及复印件</div></li>
+                    <li><div>社保卡或医保卡原件</div></li>
+                    <li><div>《参保缴费凭证》<span class="hint">（在转出地办理）</span></div></li>
+                    <li><div>《社会保险关系转移接续申请表》<span class="hint">（在转出地办理）</span></div></li>
+                    <li><div>如委托他人办理，需提供授权委托书及受委托人身份证原件</div></li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-title-icon">💊</span>
+                    险种转移说明
+                </div>
+                <div class="insurance-row">
+                    <div class="insurance-cell available">
+                        <div class="insurance-icon">✅</div>
+                        <div>养老保险</div>
+                        <div class="insurance-hint">年限+余额</div>
+                    </div>
+                    <div class="insurance-cell available">
+                        <div class="insurance-icon">✅</div>
+                        <div>医疗保险</div>
+                        <div class="insurance-hint">年限累计</div>
+                    </div>
+                    <div class="insurance-cell available">
+                        <div class="insurance-icon">✅</div>
+                        <div>失业保险</div>
+                        <div class="insurance-hint">年限+余额</div>
+                    </div>
+                    <div class="insurance-cell unavailable">
+                        <div class="insurance-icon">❌</div>
+                        <div>工伤保险</div>
+                        <div class="insurance-hint">重新参保</div>
+                    </div>
+                    <div class="insurance-cell unavailable">
+                        <div class="insurance-icon">❌</div>
+                        <div>生育保险</div>
+                        <div class="insurance-hint">重新参保</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span>📢</span>
+                    地区政策特色
+                </div>
+                <div class="policy-grid" id="policyGrid">
+                    <div class="policy-item">
+                        <div class="policy-item-icon">🌐</div>
+                        <div class="policy-item-title">跨省通办</div>
+                        <div class="policy-item-desc">全国一体化平台，线上即可办理</div>
+                    </div>
+                    <div class="policy-item">
+                        <div class="policy-item-icon">⚡</div>
+                        <div class="policy-item-title">提速办理</div>
+                        <div class="policy-item-desc">简化流程，缩短办理时限</div>
+                    </div>
+                    <div class="policy-item">
+                        <div class="policy-item-icon">📱</div>
+                        <div class="policy-item-title">掌上办理</div>
+                        <div class="policy-item-desc">手机APP随时随地办理</div>
+                    </div>
+                    <div class="policy-item">
+                        <div class="policy-item-icon">🔒</div>
+                        <div class="policy-item-title">安全保障</div>
+                        <div class="policy-item-desc">数据加密传输，安全可靠</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-title-icon">🔗</span>
+                    官方入口
+                </div>
+                <div class="links-grid">
+                    <a class="link-item" href="https://si.12333.gov.cn" target="_blank">
+                        🌐 国家社保平台
+                        <div class="link-hint">线上申请</div>
+                    </a>
+                    <a class="link-item" href="https://www.12333sb.com" target="_blank">
+                        📱 掌上12333
+                        <div class="link-hint">手机APP</div>
+                    </a>
+                    <a class="link-item" href="https://www.esocialinsurance.cn" target="_blank">
+                        💳 电子社保卡
+                        <div class="link-hint">微信/支付宝</div>
+                    </a>
+                    <a class="link-item" href="https://www.12333.gov.cn" target="_blank">
+                        🏛️ 人社政务平台
+                        <div class="link-hint">办事大厅</div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="section-title">
+                    <span class="section-title-icon">❓</span>
+                    常见问题
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">断缴影响吗？</div>
+                    <div class="faq-a">养老保险断缴不影响累计年限计算，但医疗保险断缴可能影响医保待遇享受。建议尽快办理转移接续。养老保险断缴期间不计入缴费年限，但个人账户储存额不会受到影响。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">同一城市换工作要转吗？</div>
+                    <div class="faq-a">同一城市换工作不需要办理跨省转移，新单位会直接续缴。只有跨统筹地区变动才需要办理转移。同城转移由单位HR统一办理，个人无需操作。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">办理中能停吗？重复缴费怎么办？</div>
+                    <div class="faq-a">办理过程中一般不能撤销申请，若发现重复缴费，可在转移完成后申请退还重复部分或合并处理。重复缴费部分可选择退还个人缴费部分或合并计入个人账户。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">转移后医保待遇什么时候生效？</div>
+                    <div class="faq-a">医保转移完成后，从次月起享受转入地医保待遇。建议在转移期间不要中断医保缴费，以免影响就医报销。</div>
+                </div>
+            </div>
+            
+            <div class="data-section">
+                <div class="section-title">
+                    <span class="section-title-icon">📊</span>
+                    数据说明
+                </div>
+                <p>本工具数据基于人社部《全国社会保险关系转移接续经办规程》（2022版）及各省市公开信息整理。</p>
+                
+                <p><strong>地区分类说明：</strong></p>
+                <ul>
+                    <li><span class="highlight">东部地区</span>（京津冀、长三角、珠三角）：已实现"跨省通办"，办理时限缩短50%，信息化程度高，线上办理便捷</li>
+                    <li><span class="highlight">中部地区</span>：依托省级社保平台，平均办理时限30-45个工作日，部分城市已开通跨省通办</li>
+                    <li><span class="highlight">西部及民族地区</span>：因地理跨度和信息化程度差异，办理时限45-60个工作日，提供民族语言服务</li>
+                </ul>
+                
+                <p><strong>政策背景：</strong></p>
+                <p>2022年起，全国社保转移统一接入国家社会保险公共服务平台，实现"一网通办"。但由于各地信息化建设进度、数据标准化程度不同，实际办理效率仍存在地区差异。国家正在推进全国社保信息系统整合，未来将进一步缩短办理时限。</p>
+                
+                <p><strong>办理进度查询：</strong></p>
+                <p>申请后可通过国家社保平台、掌上12333 APP或拨打12333热线查询进度。一般每7-10个工作日更新一次状态，重大节点会有短信通知。</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>免责声明：本工具仅供参考，实际办理流程和时限以人社部及当地社保机构实时规则为准</p>
+            <p>如有疑问，请咨询当地社保经办机构或拨打全国统一热线 12333</p>
+            <p style="margin-top: 12px; font-size: 11px; color: #9ca3af;">数据更新时间：2024年1月 · 基于人社部公开数据</p>
+        </div>
+    </div>
+    
+    <script>
+        var regions = [
+            "北京市", "天津市", "河北省", "山西省", "内蒙古自治区",
+            "辽宁省", "吉林省", "黑龙江省", "上海市", "江苏省",
+            "浙江省", "安徽省", "福建省", "江西省", "山东省",
+            "河南省", "湖北省", "湖南省", "广东省", "广西壮族自治区",
+            "海南省", "重庆市", "四川省", "贵州省", "云南省",
+            "西藏自治区", "陕西省", "甘肃省", "青海省", "宁夏回族自治区",
+            "新疆维吾尔自治区"
+        ];
+        
+        var transferData = {
+            east: {
+                time: "15-25个工作日",
+                expressTime: "10-15个工作日",
+                warning: "东部地区已实现跨省通办，办理效率较高",
+                tags: ["跨省通办", "线上办理", "快速通道"],
+                tagClass: ["east-1", "east-2", "east-3"],
+                policies: [
+                    { icon: "🌐", title: "跨省通办", desc: "全国一体化平台，线上即可办理" },
+                    { icon: "⚡", title: "极速办理", desc: "最快10个工作日完成" },
+                    { icon: "📱", title: "掌上办理", desc: "手机APP随时随地办理" },
+                    { icon: "💬", title: "智能客服", desc: "7x24小时在线咨询" }
+                ],
+                steps: [
+                    { title: "新就业地先参保", desc: "在转入地社保机构办理参保登记，建立个人账户", agent: "经办机构：转入地社保局" },
+                    { title: "线上提交转移申请", desc: "登录国家社保平台或掌上12333提交申请", agent: "经办机构：国家社保平台" },
+                    { title: "两地后台审核", desc: "系统自动对接，无需人工干预", agent: "经办机构：两地社保机构" },
+                    { title: "系统对接转移", desc: "通过国家社保转移平台完成信息传递和基金转移", agent: "经办机构：两地社保机构" },
+                    { title: "办结确认", desc: "完成账户合并，短信通知结果", agent: "经办机构：转入地社保局" }
+                ]
+            },
+            central: {
+                time: "30-45个工作日",
+                expressTime: "20-30个工作日",
+                warning: "中部地区依托省级平台办理，部分城市已开通跨省通办",
+                tags: ["省级平台", "逐步通办", "标准流程"],
+                tagClass: ["central-1", "central-2", "central-3"],
+                policies: [
+                    { icon: "🏢", title: "省级平台", desc: "省级社保平台统一办理" },
+                    { icon: "📈", title: "逐步通办", desc: "部分城市已开通跨省通办" },
+                    { icon: "📋", title: "标准流程", desc: "规范的转移办理流程" },
+                    { icon: "🔄", title: "系统对接", desc: "省级与国家级系统对接" }
+                ],
+                steps: [
+                    { title: "转出地办理停保", desc: "到原参保地办理养老保险停保手续", agent: "经办机构：转出地社保局" },
+                    { title: "转入地参保登记", desc: "在新就业地社保机构办理参保登记", agent: "经办机构：转入地社保局" },
+                    { title: "提交转移申请", desc: "携带身份证、参保凭证等材料提交申请", agent: "经办机构：转入地社保局" },
+                    { title: "系统对接转移", desc: "通过省级社保系统办理转移手续", agent: "经办机构：两地社保机构" },
+                    { title: "办结确认", desc: "完成缴费记录和资金转移，通知申请人", agent: "经办机构：转入地社保局" }
+                ]
+            },
+            west: {
+                time: "45-60个工作日",
+                expressTime: "30-40个工作日",
+                warning: "西部地区因地理跨度较大，办理周期相对较长",
+                tags: ["地理跨度大", "逐步推进", "人工审核"],
+                tagClass: ["west-1", "west-2", "west-3"],
+                policies: [
+                    { icon: "🌄", title: "地域特色", desc: "针对西部特点优化服务" },
+                    { icon: "🚀", title: "逐步推进", desc: "信息化建设正在加快" },
+                    { icon: "👥", title: "专人服务", desc: "提供一对一咨询服务" },
+                    { icon: "⏰", title: "进度跟踪", desc: "全程进度可查询" }
+                ],
+                steps: [
+                    { title: "办理参保凭证", desc: "在转出地社保机构开具《参保缴费凭证》", agent: "经办机构：转出地社保局" },
+                    { title: "转入地参保登记", desc: "在转入地社保机构办理参保登记", agent: "经办机构：转入地社保局" },
+                    { title: "申请转入", desc: "提交转移申请及相关材料", agent: "经办机构：转入地社保局" },
+                    { title: "系统对接转移", desc: "等待函件往来和资金划转", agent: "经办机构：两地社保机构" },
+                    { title: "办结确认", desc: "完成账户合并，确认资金到账", agent: "经办机构：转入地社保局" }
+                ]
+            },
+            ethnic: {
+                time: "45-60个工作日",
+                expressTime: "30-40个工作日",
+                warning: "民族地区涉及特殊政策，建议提前咨询当地社保经办机构了解详细要求",
+                tags: ["民族区域自治", "特殊政策", "双语服务"],
+                tagClass: ["ethnic-1", "ethnic-2", "ethnic-3"],
+                policies: [
+                    { icon: "🏛️", title: "民族政策", desc: "享受民族地区特殊政策支持" },
+                    { icon: "🗣️", title: "双语服务", desc: "提供民族语言服务支持" },
+                    { icon: "🤝", title: "专人对接", desc: "安排专人负责办理" },
+                    { icon: "🎯", title: "精准服务", desc: "针对民族地区定制服务" }
+                ],
+                steps: [
+                    { title: "政策咨询", desc: "提前咨询当地社保经办机构了解特殊政策", agent: "经办机构：当地社保局" },
+                    { title: "办理参保凭证", desc: "在转出地社保机构开具《参保缴费凭证》", agent: "经办机构：转出地社保局" },
+                    { title: "转入地参保登记", desc: "在转入地社保机构办理参保登记", agent: "经办机构：转入地社保局" },
+                    { title: "提交转移申请", desc: "提交转移申请及相关材料，包括民族地区特殊材料", agent: "经办机构：转入地社保局" },
+                    { title: "办结确认", desc: "完成账户合并，确认资金到账", agent: "经办机构：转入地社保局" }
+                ]
+            }
+        };
+        
+        var eastRegions = ["北京市", "天津市", "河北省", "上海市", "江苏省", "浙江省", "福建省", "山东省", "广东省", "海南省"];
+        var centralRegions = ["山西省", "辽宁省", "吉林省", "黑龙江省", "安徽省", "江西省", "河南省", "湖北省", "湖南省"];
+        var ethnicRegions = ["西藏自治区", "新疆维吾尔自治区", "内蒙古自治区", "广西壮族自治区", "宁夏回族自治区"];
+        
+        function initRegions() {
+            var fromRegion = document.getElementById('fromRegion');
+            var toRegion = document.getElementById('toRegion');
+            var options = '';
+            for (var i = 0; i < regions.length; i++) {
+                options += '<option value="' + regions[i] + '">' + regions[i] + '</option>';
+            }
+            fromRegion.innerHTML = '<option value="">请选择转出地</option>' + options;
+            toRegion.innerHTML = '<option value="">请选择转入地</option>' + options;
+        }
+        
+        function getRegionType(region) {
+            if (ethnicRegions.includes(region)) return 'ethnic';
+            if (eastRegions.includes(region)) return 'east';
+            if (centralRegions.includes(region)) return 'central';
+            return 'west';
+        }
+        
+        function showTransferFlow() {
+            var from = document.getElementById('fromRegion').value;
+            var to = document.getElementById('toRegion').value;
+            
+            if (!from || !to) {
+                alert('请选择转出地和转入地');
+                return;
+            }
+            
+            if (from === to) {
+                alert('转出地和转入地不能相同');
+                return;
+            }
+            
+            var regionType = getRegionType(from);
+            var data = transferData[regionType];
+            
+            document.getElementById('warningTitle').innerHTML = ethnicRegions.includes(from) ? '⚠️ 民族地区特殊提示' : '📌 办理提示';
+            document.getElementById('warningDesc').textContent = data.warning;
+            
+            var tagsHTML = '';
+            for (var i = 0; i < data.tags.length; i++) {
+                tagsHTML += '<span class="tag ' + data.tagClass[i] + '">' + data.tags[i] + '</span>';
+            }
+            document.getElementById('tagsRow').innerHTML = tagsHTML;
+            document.getElementById('warningBox').style.display = 'block';
+            
+            document.getElementById('flowTitle').innerHTML = '从 ' + from + ' 到 ' + to + ' 的社保转移流程';
+            document.getElementById('flowSubtitle').textContent = '预计办理时限';
+            
+            document.getElementById('normalDays').textContent = data.time;
+            document.getElementById('expressDays').textContent = data.expressTime;
+            
+            var regionTag = '';
+            if (regionType === 'east') regionTag = '东部地区';
+            else if (regionType === 'central') regionTag = '中部地区';
+            else if (regionType === 'ethnic') regionTag = '民族地区';
+            else regionTag = '西部地区';
+            
+            document.getElementById('infoRow').innerHTML = 
+                '<div class="info-cell"><div class="info-cell-label">办理时限</div><div class="info-cell-value">' + data.time + '</div></div>' +
+                '<div class="info-cell"><div class="info-cell-label">地区类型</div><div class="info-cell-value">' + regionTag + '</div></div>' +
+                '<div class="info-cell"><div class="info-cell-label">咨询热线</div><div class="info-cell-value">12333</div></div>' +
+                '<div class="info-cell"><div class="info-cell-label">办理方式</div><div class="info-cell-value">线上/线下</div></div>';
+            
+            var stepsHTML = '';
+            for (var i = 0; i < data.steps.length; i++) {
+                stepsHTML += '<div class="step-item"><div class="step-num">' + (i+1) + '</div><div class="step-body"><div class="step-title">' + data.steps[i].title + '</div><div class="step-desc">' + data.steps[i].desc + '</div><div class="step-agent">' + data.steps[i].agent + '</div></div></div>';
+            }
+            document.getElementById('stepsList').innerHTML = stepsHTML;
+            
+            var policiesHTML = '';
+            for (var i = 0; i < data.policies.length; i++) {
+                policiesHTML += '<div class="policy-item"><div class="policy-item-icon">' + data.policies[i].icon + '</div><div class="policy-item-title">' + data.policies[i].title + '</div><div class="policy-item-desc">' + data.policies[i].desc + '</div></div>';
+            }
+            document.getElementById('policyGrid').innerHTML = policiesHTML;
+            
+            document.getElementById('result').classList.add('show');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function shareResult() {
+            var from = document.getElementById('fromRegion').value;
+            var to = document.getElementById('toRegion').value;
+            var regionType = getRegionType(from);
+            var time = transferData[regionType].time;
+            var text = '从' + from + '到' + to + '的社保转移流程，预计办理时限：' + time + '。详情请查询跨省社保转移流程工具。';
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    alert('分享内容已复制到剪贴板');
+                }).catch(function() {
+                    alert('复制失败，请手动复制');
+                });
+            } else {
+                alert('您的浏览器不支持复制功能');
+            }
+        }
+        
+        function toggleFaq(el) {
+            el.classList.toggle('active');
+            el.nextElementSibling.classList.toggle('show');
+        }
+        
+        initRegions();
+    </script>
+</body>
+</html>
